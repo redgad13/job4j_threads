@@ -10,16 +10,11 @@ public class ThreadState {
         );
         first.start();
         second.start();
-        boolean allFinished = false;
-        Thread[] threads = {first, second};
-        while (!allFinished) {
-            allFinished = true;
-            for (Thread thread : threads) {
-                if (thread.isAlive()) {
-                    allFinished = false;
-                    break;
-                }
-            }
+        while (first.getState() != Thread.State.TERMINATED
+                && second.getState() != Thread.State.TERMINATED) {
+            System.out.println(first.getName());
+            System.out.println(second.getName());
+
         }
         System.out.println(Thread.currentThread().getName());
     }
