@@ -10,8 +10,8 @@ public class Wget implements Runnable {
     private final String url;
     private final String destFolder;
     private final int speed;
-    private static final String regex = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
-    private static final Pattern pattern = Pattern.compile(regex);
+    private static final String REGEX = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+    private static final Pattern PATTERN = Pattern.compile(REGEX);
 
     public Wget(String url, String destFolder, int speed) {
         this.url = url;
@@ -44,7 +44,7 @@ public class Wget implements Runnable {
     }
 
     private static boolean checkUrl(String url) {
-        Matcher matcher = pattern.matcher(url);
+        Matcher matcher = PATTERN.matcher(url);
         return matcher.matches();
     }
 
