@@ -9,10 +9,6 @@ public final class SaverForParsedFile {
         this.file = file;
     }
 
-    public synchronized File getFile() {
-        return file;
-    }
-
     public synchronized void saveContent(String content) throws IOException {
         try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
             for (int i = 0; i < content.length(); i++) {

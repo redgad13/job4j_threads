@@ -10,15 +10,11 @@ public final class ParseFile {
         this.file = file;
     }
 
-    public synchronized File getFile() {
-        return file;
-    }
-
     public synchronized String getContent(Predicate<Character> filter) throws IOException {
         StringBuilder output = new StringBuilder();
         try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(file))) {
             int data;
-            while ((data = in.available()) > 0) {
+            while ((data = in.available()) != -1) {
                 if (filter.test((char) data)) {
                     output.append((char) data);
                 }
