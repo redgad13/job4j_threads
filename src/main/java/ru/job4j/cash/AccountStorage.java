@@ -31,9 +31,9 @@ public class AccountStorage {
         boolean rsl = false;
         boolean fromIsOk = getById(fromId).isPresent();
         boolean toIsOk = getById(toId).isPresent();
-        if (fromIsOk && toIsOk && getById(fromId).get().amount() >= amount) {
-            accounts.put(fromId, new Account(fromId, getById(fromId).get().amount() - amount));
-            accounts.put(toId, new Account(toId, getById(toId).get().amount() + amount));
+        if (fromIsOk && toIsOk && getById(fromId).get().amount() > amount) {
+            accounts.put(fromId, new Account(fromId, accounts.get(fromId).amount() - amount));
+            accounts.put(toId, new Account(toId, accounts.get(toId).amount() - amount));
             rsl = true;
         }
         return rsl;
