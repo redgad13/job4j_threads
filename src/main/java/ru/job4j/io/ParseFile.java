@@ -28,6 +28,6 @@ public final class ParseFile {
     }
 
     public synchronized String getAllContent() throws IOException {
-        return getContent(d -> d >= 0x80);
+        return getContent(d -> true);
     }
 }
