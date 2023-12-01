@@ -1,5 +1,6 @@
 package ru.job4j.cash;
 
+import com.beust.ah.A;
 import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
@@ -12,7 +13,7 @@ public class AccountStorage {
     private final HashMap<Integer, Account> accounts = new HashMap<>();
 
     public synchronized boolean add(Account account) {
-        return accounts.putIfAbsent(account.id(), account) != null;
+        return accounts.putIfAbsent(account.id(), account) == null;
     }
 
     public synchronized boolean update(Account account) {
@@ -29,9 +30,9 @@ public class AccountStorage {
 
     public synchronized boolean transfer(int fromId, int toId, int amount) {
         boolean rsl = false;
-        boolean fromIsOk = getById(fromId).isPresent();
-        boolean toIsOk = getById(toId).isPresent();
-        if (fromIsOk && toIsOk && getById(fromId).get().amount() >= amount) {
+        Optional<Account> from = getById(fromId);
+        Optional<Account> to = getById(toId);
+        if (from.isPresent() && to.isPresent() && from.get().amount() >= amount) {
             accounts.put(fromId, new Account(fromId, accounts.get(fromId).amount() - amount));
             accounts.put(toId, new Account(toId, accounts.get(toId).amount() + amount));
             rsl = true;
