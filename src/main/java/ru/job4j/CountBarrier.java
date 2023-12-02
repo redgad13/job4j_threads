@@ -25,4 +25,12 @@ public class CountBarrier {
             }
         }
     }
+
+    public static void main(String[] args) throws InterruptedException {
+        CountBarrier countBarrier = new CountBarrier(3);
+        countBarrier.count();
+        countBarrier.count();
+        countBarrier.await();
+        countBarrier.count();
+    }
 }
