@@ -18,10 +18,14 @@ public class CountBarrier {
         }
     }
 
-    public void await() throws InterruptedException {
+    public void await() {
         synchronized (monitor) {
             while (count < total) {
-                monitor.wait();
+                try {
+                    monitor.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -30,7 +34,7 @@ public class CountBarrier {
         CountBarrier countBarrier = new CountBarrier(3);
         countBarrier.count();
         countBarrier.count();
-        countBarrier.await();
         countBarrier.count();
+        countBarrier.await();
     }
 }
