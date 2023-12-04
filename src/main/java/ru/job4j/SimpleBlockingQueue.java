@@ -10,14 +10,17 @@ import java.util.Queue;
 public class SimpleBlockingQueue<T> {
     @GuardedBy("this")
     private Queue<T> queue = new LinkedList<>();
-    private int size;
+    private final int size;
+
+    public SimpleBlockingQueue(int size) {
+        this.size = size;
+    }
 
     public synchronized void offer(T value) throws InterruptedException {
-        while (size > queue.size()) {
+        while (size >= queue.size()) {
             this.wait();
         }
         queue.add(value);
-        size++;
         notifyAll();
     }
 
