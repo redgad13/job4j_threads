@@ -8,7 +8,7 @@ class SimpleBlockingQueueTest {
 
     @Test
     void whenOfferIsOK() throws InterruptedException {
-        SimpleBlockingQueue<Integer> sbq = new SimpleBlockingQueue<>();
+        SimpleBlockingQueue<Integer> sbq = new SimpleBlockingQueue<>(3);
         sbq.offer(1);
         sbq.offer(2);
         sbq.offer(3);
