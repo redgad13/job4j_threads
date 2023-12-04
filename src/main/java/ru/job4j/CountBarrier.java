@@ -32,9 +32,15 @@ public class CountBarrier {
 
     public static void main(String[] args) throws InterruptedException {
         CountBarrier countBarrier = new CountBarrier(3);
-        countBarrier.count();
-        countBarrier.count();
-        countBarrier.count();
-        countBarrier.await();
+        Thread first = new Thread(countBarrier::count);
+        Thread second = new Thread(countBarrier::count);
+        Thread third = new Thread(countBarrier::count);
+        Thread fourth = new Thread(countBarrier::count);
+        Thread fifth = new Thread(countBarrier::await);
+        first.start();
+        second.start();
+        third.start();
+        fourth.start();
+        fifth.start();
     }
 }
