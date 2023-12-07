@@ -1,19 +1,44 @@
 package ru.job4j;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.IntStream;
 
-class SimpleBlockingQueueTest {
+import static org.assertj.core.api.Assertions.assertThat;
 
+public class SimpleBlockingQueueTest {
     @Test
-    void whenOfferIsOK() throws InterruptedException {
-        SimpleBlockingQueue<Integer> sbq = new SimpleBlockingQueue<>(3);
-        sbq.offer(1);
-        sbq.offer(2);
-        sbq.offer(3);
-        assertThat(sbq.poll()).isEqualTo(1);
-        assertThat(sbq.poll()).isEqualTo(2);
-        assertThat(sbq.poll()).isEqualTo(3);
+    public void whenFetchAllThenGetIt() throws InterruptedException {
+        final CopyOnWriteArrayList<Integer> buffer = new CopyOnWriteArrayList<>();
+        final SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(5);
+        Thread producer = new Thread(
+                () -> IntStream.range(0, 5).forEach(value -> {
+                    try {
+                        queue.offer(value);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        Thread.currentThread().interrupt();
+                    }
+                })
+        );
+        producer.start();
+        Thread consumer = new Thread(
+                () -> {
+                    while (!queue.isEmpty() || !Thread.currentThread().isInterrupted()) {
+                        try {
+                            buffer.add(queue.poll());
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                            Thread.currentThread().interrupt();
+                        }
+                    }
+                }
+        );
+        consumer.start();
+        producer.join();
+        consumer.interrupt();
+        consumer.join();
+        assertThat(buffer).containsExactly(0, 1, 2, 3, 4);
     }
 }
