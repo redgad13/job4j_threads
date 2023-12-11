@@ -24,13 +24,21 @@ class CASCountTest {
         CASCount casCount = new CASCount();
         int rsl = casCount.get();
         assertThat(rsl).isEqualTo(0);
-        Thread first = new Thread(casCount::increment);
-        Thread second = new Thread(casCount::increment);
+        Thread first = new Thread(() -> {
+            for (int i = 0; i < 100; i++) {
+                casCount.increment();
+            }
+        });
+        Thread second = new Thread(() -> {
+            for (int i = 0; i < 100; i++) {
+                casCount.increment();
+            }
+        });
         first.start();
         second.start();
         first.join();
         second.join();
         rsl = casCount.get();
-        assertThat(rsl).isEqualTo(2);
+        assertThat(rsl).isEqualTo(200);
     }
 }
