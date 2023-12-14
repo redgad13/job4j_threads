@@ -32,8 +32,6 @@ public class Cache {
     }
 
     public Optional<Base> findById(int id) {
-        return Stream.of(memory.get(id))
-                .filter(Objects::nonNull)
-                .findFirst();
+        return Stream.of(memory.get(id)).filter(Objects::nonNull).findFirst();
     }
 }
