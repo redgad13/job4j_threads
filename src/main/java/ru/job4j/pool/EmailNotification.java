@@ -19,6 +19,6 @@ public class EmailNotification {
     }
 
     public void close() {
-        pool.close();
+        pool.shutdown();
     }
 }
