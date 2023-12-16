@@ -13,13 +13,15 @@ public class ThreadPool {
     public ThreadPool() {
         for (int i = 0; i < size; i++) {
             Thread thread = new Thread(() -> {
-                try {
-                    while (tasks.isEmpty()) {
-                        Thread.currentThread().wait();
+                while (!Thread.currentThread().isInterrupted()) {
+                    try {
+                        Runnable task = tasks.poll();
+                        if (task != null) {
+                            task.run();
+                        }
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
                     }
-                    tasks.poll();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
             });
             threads.add(thread);
@@ -29,12 +31,19 @@ public class ThreadPool {
 
     public void work(Runnable job) throws InterruptedException {
         tasks.offer(job);
-        notifyAll();
     }
 
     public void shutdown() {
         for (Thread thread : threads) {
             thread.interrupt();
         }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        ThreadPool threadPool = new ThreadPool();
+        for (int i = 0; i < 100; i++) {
+            threadPool.work(() -> System.out.println("test"));
+        }
+        threadPool.shutdown();
     }
 }
