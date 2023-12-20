@@ -28,7 +28,7 @@ public class MergeSort {
             } else if (rightI == right.length) {
                 result[resultI++] = left[leftI++];
             } else if (left[leftI] <= right[rightI]) {
-                result[resultI  ++] = left[leftI++];
+                result[resultI++] = left[leftI++];
             } else {
                 result[resultI++] = right[rightI++];
             }
