@@ -31,7 +31,9 @@ public class IndexSearch<T> extends RecursiveTask<Integer> {
             Integer rightResult = rightSearch.join();
             if (leftResult != -1) {
                 return leftResult;
-            } else return rightResult;
+            } else {
+                return rightResult;
+            }
         }
     }
 
