@@ -44,4 +44,18 @@ class IndexSearchTest {
         int expected = indexSearch.compute();
         assertThat(expected).isEqualTo(-1);
     }
+
+    @Test
+    void whenNoSuchElementViaCommonMethod() {
+        String[] array = new String[]{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"};
+        Integer expected = IndexSearch.search(array, "rrr");
+        assertThat(expected).isEqualTo(-1);
+    }
+
+    @Test
+    void whenStringMoreThan10ViaCommonMethod() {
+        String[] array = new String[]{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"};
+        Integer expected = IndexSearch.search(array, "eleven");
+        assertThat(expected).isEqualTo(10);
+    }
 }
