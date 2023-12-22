@@ -21,20 +21,15 @@ public class IndexSearch<T> extends RecursiveTask<Integer> {
     protected Integer compute() {
         if (to - from <= 10) {
             return linearSearch();
-        } else {
-            int middle = (from + to) / 2;
-            IndexSearch<T> leftSearch = new IndexSearch<>(array, lookingFor, from, middle);
-            IndexSearch<T> rightSearch = new IndexSearch<>(array, lookingFor, middle + 1, to);
-            leftSearch.fork();
-            rightSearch.fork();
-            Integer leftResult = leftSearch.join();
-            Integer rightResult = rightSearch.join();
-            if (leftResult != -1) {
-                return leftResult;
-            } else {
-                return rightResult;
-            }
         }
+        int middle = (from + to) / 2;
+        IndexSearch<T> leftSearch = new IndexSearch<>(array, lookingFor, from, middle);
+        IndexSearch<T> rightSearch = new IndexSearch<>(array, lookingFor, middle + 1, to);
+        leftSearch.fork();
+        rightSearch.fork();
+        Integer leftResult = leftSearch.join();
+        Integer rightResult = rightSearch.join();
+        return Math.max(linearSearch(), Math.max(leftResult, rightResult));
     }
 
     private Integer linearSearch() {
