@@ -61,8 +61,7 @@ public class RowsAndColumnsSum {
     }
 
     public static CompletableFuture<Map<Integer, Integer>> rowsSum(int[][] matrix) {
-        return CompletableFuture.supplyAsync(() ->
-        {
+        return CompletableFuture.supplyAsync(() -> {
             Map<Integer, Integer> rsl = new HashMap<>();
             int sum = 0;
             for (int i = 0; i < matrix.length; i++) {
@@ -77,8 +76,7 @@ public class RowsAndColumnsSum {
     }
 
     public static CompletableFuture<Map<Integer, Integer>> columnsSum(int[][] matrix) {
-        return CompletableFuture.supplyAsync(() ->
-        {
+        return CompletableFuture.supplyAsync(() -> {
             Map<Integer, Integer> rsl = new HashMap<>();
             int sum = 0;
             for (int j = 0; j < matrix.length; j++) {
