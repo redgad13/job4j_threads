@@ -1,9 +1,6 @@
 package ru.job4j.pools;
 
 import org.junit.jupiter.api.Test;
-
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.*;
@@ -19,17 +16,14 @@ class RowsAndColumnsSumTest {
                 matrix[i][j] = count++;
             }
         }
-        RowsAndColumnsSum.Sums[] rsl = RowsAndColumnsSum.sum(matrix);
-        assertThat(rsl[0].getRowSum()).isEqualTo(15);
-        assertThat(rsl[1].getRowSum()).isEqualTo(40);
-        assertThat(rsl[2].getRowSum()).isEqualTo(65);
-        assertThat(rsl[3].getRowSum()).isEqualTo(90);
-        assertThat(rsl[4].getRowSum()).isEqualTo(115);
-        assertThat(rsl[0].getColSum()).isEqualTo(55);
-        assertThat(rsl[1].getColSum()).isEqualTo(60);
-        assertThat(rsl[2].getColSum()).isEqualTo(65);
-        assertThat(rsl[3].getColSum()).isEqualTo(70);
-        assertThat(rsl[4].getColSum()).isEqualTo(75);
+        Sums[] myMatrix = RowsAndColumnsSum.sum(matrix);
+        Sums[] rsl = new Sums[myMatrix.length];
+        rsl[0] = new Sums(15, 55);
+        rsl[1] = new Sums(40, 60);
+        rsl[2] = new Sums(65, 65);
+        rsl[3] = new Sums(90, 70);
+        rsl[4] = new Sums(115, 75);
+        assertThat(myMatrix).isEqualTo(rsl);
     }
 
     @Test
@@ -41,18 +35,13 @@ class RowsAndColumnsSumTest {
                 matrix[i][j] = count++;
             }
         }
-        CompletableFuture<Map<Integer, Integer>> rowsSum = RowsAndColumnsSum.rowsSum(matrix);
-        CompletableFuture<Map<Integer, Integer>> columnsSum = RowsAndColumnsSum.columnsSum(matrix);
-        RowsAndColumnsSum.Sums[] rsl = RowsAndColumnsSum.asyncSum(matrix, columnsSum, rowsSum);
-        assertThat(rsl[0].getRowSum()).isEqualTo(15);
-        assertThat(rsl[1].getRowSum()).isEqualTo(40);
-        assertThat(rsl[2].getRowSum()).isEqualTo(65);
-        assertThat(rsl[3].getRowSum()).isEqualTo(90);
-        assertThat(rsl[4].getRowSum()).isEqualTo(115);
-        assertThat(rsl[0].getColSum()).isEqualTo(55);
-        assertThat(rsl[1].getColSum()).isEqualTo(60);
-        assertThat(rsl[2].getColSum()).isEqualTo(65);
-        assertThat(rsl[3].getColSum()).isEqualTo(70);
-        assertThat(rsl[4].getColSum()).isEqualTo(75);
+        Sums[] myMatrix = RowsAndColumnsSum.asyncSum(matrix);
+        Sums[] rsl = new Sums[myMatrix.length];
+        rsl[0] = new Sums(15, 55);
+        rsl[1] = new Sums(40, 60);
+        rsl[2] = new Sums(65, 65);
+        rsl[3] = new Sums(90, 70);
+        rsl[4] = new Sums(115, 75);
+        assertThat(myMatrix).isEqualTo(rsl);
     }
 }

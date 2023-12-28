@@ -7,55 +7,26 @@ import java.util.concurrent.ExecutionException;
 
 public class RowsAndColumnsSum {
 
-    public static class Sums {
-        private int rowSum;
-        private int colSum;
-
-        public int getRowSum() {
-            return rowSum;
-        }
-
-        public void setRowSum(int rowSum) {
-            this.rowSum = rowSum;
-        }
-
-        public int getColSum() {
-            return colSum;
-        }
-
-        public void setColSum(int colSum) {
-            this.colSum = colSum;
-        }
-    }
-
     public static Sums[] sum(int[][] matrix) {
-        int rowSum = 0;
-        int colSum = 0;
-        Sums[] rsl = new Sums[matrix.length];
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                colSum += matrix[j][i];
-            }
+        int rows = matrix.length;
+        int columns = matrix[0].length;
+        Sums[] rsl = new Sums[rows];
+        for (int i = 0; i < rows; i++) {
             rsl[i] = new Sums();
-            rsl[i].setColSum(colSum);
-            colSum = 0;
-        }
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                rowSum += matrix[i][j];
+            for (int j = 0; j < columns; j++) {
+                rsl[i].setRowSum(rsl[i].getRowSum() + matrix[i][j]);
+                rsl[i].setColSum(rsl[i].getColSum() + matrix[j][i]);
             }
-            rsl[i].setRowSum(rowSum);
-            rowSum = 0;
         }
         return rsl;
     }
 
-    public static Sums[] asyncSum(int[][] matrix, CompletableFuture<Map<Integer, Integer>> columns, CompletableFuture<Map<Integer, Integer>> rows) throws ExecutionException, InterruptedException {
+    public static Sums[] asyncSum(int[][] matrix) throws ExecutionException, InterruptedException {
         Sums[] rsl = new Sums[matrix.length];
-        for (int i = 0; i < columns.get().size(); i++) {
+        for (int i = 0; i < rsl.length; i++) {
             rsl[i] = new Sums();
-            rsl[i].setRowSum(rows.get().get(i));
-            rsl[i].setColSum(columns.get().get(i));
+            rsl[i].setRowSum(rowsSum(matrix).get().get(i));
+            rsl[i].setColSum(columnsSum(matrix).get().get(i));
         }
         return rsl;
     }
